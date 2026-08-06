@@ -6,21 +6,24 @@ This assignment demonstrates **smoothing** and **sharpening** filtering in the s
 
 ## Theory
 
-### Spatial Domain Filtering
+# Spatial Domain Filtering
 
-Spatial domain filtering operates directly on the pixel values of an image. A filter (also called a kernel or mask) is applied to each pixel by computing a weighted sum of the pixel values in a neighborhood around that pixel. The result is a transformed image.
+## Overview
+Spatial domain filtering operates directly on the pixel values of an image. A filter (also commonly referred to as a kernel or mask) is applied to each individual pixel by computing a weighted sum of the pixel values within a specific neighborhood around that target pixel. The result of this process is a newly transformed image.
 
-The general form of spatial filtering is:
+## Mathematical Formulation
+The general form of linear spatial filtering is defined by the following equation:
 
-```
-g(x, y) = Σ Σ w(s, t) · f(x + s, y + t)
-```
+$$g(x, y) = \sum_{s=-a}^{a} \sum_{t=-b}^{b} w(s, t) f(x + s, y + t)$$
 
-where:
-- `f(x, y)` is the input image
-- `g(x, y)` is the output image
-- `w(s, t)` is the filter kernel (weight matrix)
-- The summation is over the kernel dimensions
+*(Note: For a kernel of size $m \times n$, the limits are typically defined as $a = (m-1)/2$ and $b = (n-1)/2$.)*
+
+## Variables
+
+*   $f(x, y)$: The input image (original pixel values).
+*   $g(x, y)$: The output image (transformed pixel values).
+*   $w(s, t)$: The filter kernel or weight matrix applied to the neighborhood.
+*   $s, t$: The spatial coordinates within the filter kernel.
 
 ### Smoothing Filters
 
@@ -28,26 +31,24 @@ Smoothing filters are used for **blurring** and **noise reduction**. They work b
 
 #### 1. Box Filter (Averaging Filter)
 
-The box filter replaces each pixel with the **unweighted average** of all pixels within the kernel window. For a `k × k` kernel:
+The box filter replaces each pixel with the **unweighted average** of all pixels within the kernel window. For a $k \times k$ kernel, the weights are defined as:
 
-```
-w(s, t) = 1 / (k * k)   for all (s, t) in the kernel
-```
+$$w(s, t) = \frac{1}{k^2}$$
 
-Every pixel in the neighborhood contributes equally. This is the simplest smoothing filter but tends to blur edges along with noise.
+*for all $(s, t)$ within the kernel neighborhood.*
+
+Every pixel in the neighborhood contributes equally. This is the simplest smoothing filter, but it tends to blur edges along with noise.
 
 #### 2. Gaussian Filter
 
 The Gaussian filter performs a **weighted average** where the weights are determined by a 2D Gaussian function:
 
-```
-G(x, y) = (1 / (2πσ²)) · exp(-(x² + y²) / (2σ²))
-```
+$$G(x, y) = \frac{1}{2\pi\sigma^2} \exp\left(-\frac{x^2 + y^2}{2\sigma^2}\right)$$
 
 - Pixels closer to the center receive **higher weights**.
 - Pixels farther from the center receive **lower weights**.
-- `σ` (sigma) controls the spread of the Gaussian — larger σ produces more blurring.
-- When `sigmaX=0`, OpenCV computes σ from the kernel size automatically.
+- $\sigma$ (sigma) controls the spread of the Gaussian — larger $\sigma$ produces more blurring.
+- When `sigmaX=0`, OpenCV computes $\sigma$ from the kernel size automatically.
 
 The Gaussian filter is **separable**, meaning the 2D convolution can be performed as two 1D convolutions (horizontal then vertical), making it computationally efficient.
 
@@ -59,27 +60,25 @@ Sharpening filters enhance edges and fine details by emphasizing high-frequency 
 
 The Laplacian is a second-order derivative operator that detects regions of rapid intensity change:
 
-```
-∇²f = ∂²f/∂x² + ∂²f/∂y²
-```
+$$\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}$$
 
 In discrete form, a common 3×3 Laplacian kernel is:
 
-```
-  0  1  0
-  1 -4  1
-  0  1  0
-```
+$$
+\begin{bmatrix}
+ 0 &  1 & 0 \\
+ 1 & -4 & 1 \\
+ 0 &  1 & 0
+\end{bmatrix}
+$$
 
 Sharpening is achieved by **adding** the Laplacian back to the original image:
 
-```
-sharpened = original - alpha · laplacian
-```
+$$\text{sharpened} = \text{original} - \alpha \cdot \text{laplacian}$$
 
 or equivalently using `cv2.addWeighted`:
 
-```
+```python
 sharpened = cv2.addWeighted(original, 1.5, laplacian, -0.5, 0)
 ```
 
