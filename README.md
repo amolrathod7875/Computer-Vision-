@@ -34,6 +34,9 @@ The assignments cover:
    analyzing the individual HSV channels.
 3. **Spatial Domain Filtering** — smoothing (Box and Gaussian filters) and
    sharpening (Laplacian filter) using convolution kernels.
+4. **Histogram Equalization** — contrast enhancement techniques (Standard Global
+   Histogram Equalization and CLAHE) applied to the luminance channel of the LAB
+   color space (`cv2.equalizeHist`, `cv2.createCLAHE`).
 
 All notebooks operate on a shared sample image (`BMW.jpeg`) and render their
 results with Matplotlib.
@@ -45,6 +48,7 @@ results with Matplotlib.
 | `CV_Assignment_2/` | `Ass2.ipynb` | Geometric Transformations (Translation, Rotation, Scaling) | `cv2.warpAffine`, `cv2.getRotationMatrix2D`, `cv2.resize` |
 | `CV_Assignment_3/` | `Ass3.ipynb` | Color Space Conversions (BGR/RGB/Gray/HSV) | `cv2.cvtColor`, `cv2.split` |
 | `CV_Assignment_4/` | `assignment4.ipynb` | Spatial Domain Filtering (Box, Gaussian, Laplacian) | `cv2.blur`, `cv2.GaussianBlur`, `cv2.Laplacian`, `cv2.addWeighted` |
+| `CV_Assignment_5/` | `code.ipynb` | Histogram Equalization (Standard & CLAHE) in LAB Color Space | `cv2.cvtColor`, `cv2.split`, `cv2.equalizeHist`, `cv2.createCLAHE`, `cv2.merge` |
 
 Each assignment folder also contains its own `README.md` with detailed theory,
 per-cell code explanation, and a Q&A section.
