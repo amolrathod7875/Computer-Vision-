@@ -174,6 +174,11 @@ Computer-Vision-/
     ├── Kernel.png               # Example kernel visualization
     ├── Sharpened_Image.png      # Example sharpened output
     └── README.md                # Assignment 4 documentation
+├── CV_Assignment_5/
+│   ├── code.ipynb               # Histogram equalization notebook
+│   ├── BMW.jpeg                 # Sample input image
+│   ├── output.png               # Cached output visualization
+│   └── README.md                # Assignment 5 documentation
 ```
 
 ## Configuration
@@ -182,11 +187,13 @@ There is no external configuration file. All parameters (translation offsets,
 rotation angles, scaling factors, kernel sizes, sigma values) are defined as
 plain Python variables at the top of the relevant notebook cells. To experiment:
 
-- **Assignment 2:** change `tx, ty`, `angle`, `sx, sy` before running the
-  transformation cells.
-- **Assignment 3:** pass a different image path to `process_image(...)`.
-- **Assignment 4:** change the kernel size (e.g. `(5, 5)` → `(9, 9)`) or the
-  `addWeighted` weights to control blur/sharpen strength.
+  - **Assignment 2:** change `tx, ty`, `angle`, `sx, sy` before running the
+    transformation cells.
+  - **Assignment 3:** pass a different image path to `process_image(...)`.
+  - **Assignment 4:** change the kernel size (e.g. `(5, 5)` → `(9, 9)`) or the
+    `addWeighted` weights to control blur/sharpen strength.
+  - **Assignment 5:** change the `clipLimit` or `tileGridSize` in
+    `cv2.createCLAHE(...)` to control CLAHE strength and tile granularity.
 
 ## Running Tests
 
@@ -199,7 +206,7 @@ notebook headlessly and fail on errors:
 
 ```bash
 pip install nbconvert nbclient
-for nb in CV_Assignment_2/Ass2.ipynb CV_Assignment_3/Ass3.ipynb CV_Assignment_4/assignment4.ipynb; do
+for nb in CV_Assignment_2/Ass2.ipynb CV_Assignment_3/Ass3.ipynb CV_Assignment_4/assignment4.ipynb CV_Assignment_5/code.ipynb; do
   jupyter nbconvert --to notebook --execute --stdout "$nb" > /dev/null
 done
 ```
