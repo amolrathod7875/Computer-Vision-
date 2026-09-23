@@ -2,9 +2,9 @@
 
 A collection of hands-on computer vision assignments implemented in Python using
 [OpenCV](https://opencv.org/), [NumPy](https://numpy.org/), and
-[Matplotlib](https://matplotlib.org/). Each assignment is a self-contained Jupyter
-notebook that demonstrates a fundamental image-processing concept, from geometric
-transformations to spatial-domain filtering.
+[Matplotlib](https://matplotlib.org/). Each assignment is a self-contained
+Jupyter notebook or Python script that demonstrates a fundamental image-processing
+concept, from geometric transformations to object detection with OpenVINO.
 
 ## Table of Contents
 
@@ -29,29 +29,32 @@ kernels) translate into working OpenCV calls.
 The assignments cover:
 
 1. **Geometric Transformations** — translation, rotation, and scaling via affine
-   matrices (`cv2.warpAffine`, `cv2.getRotationMatrix2D`, `cv2.resize`).
+    matrices (`cv2.warpAffine`, `cv2.getRotationMatrix2D`, `cv2.resize`).
 2. **Color Space Conversions** — moving between BGR, RGB, Grayscale, and HSV, and
-   analyzing the individual HSV channels.
+    analyzing the individual HSV channels.
 3. **Spatial Domain Filtering** — smoothing (Box and Gaussian filters) and
-   sharpening (Laplacian filter) using convolution kernels.
+    sharpening (Laplacian filter) using convolution kernels.
 4. **Histogram Equalization** — contrast enhancement techniques (Standard Global
-   Histogram Equalization and CLAHE) applied to the luminance channel of the LAB
-   color space (`cv2.equalizeHist`, `cv2.createCLAHE`).
+    Histogram Equalization and CLAHE) applied to the luminance channel of the LAB
+    color space (`cv2.equalizeHist`, `cv2.createCLAHE`).
+5. **Object Detection with OpenVINO** — real-time object detection using the OpenVINO
+    toolkit with a YOLOX-Nano detector (ONNX → IR conversion, CPU inference, NMS).
 
 All notebooks operate on a shared sample image (`BMW.jpeg`) and render their
 results with Matplotlib.
 
 ## Assignments Overview
 
-| Folder | Notebook | Topic | Key OpenCV Functions |
-|--------|----------|-------|----------------------|
+| Folder | Notebook/Script | Topic | Key OpenCV Functions |
+|--------|-----------------|-------|----------------------|
 | `CV_Assignment_2/` | `Ass2.ipynb` | Geometric Transformations (Translation, Rotation, Scaling) | `cv2.warpAffine`, `cv2.getRotationMatrix2D`, `cv2.resize` |
 | `CV_Assignment_3/` | `Ass3.ipynb` | Color Space Conversions (BGR/RGB/Gray/HSV) | `cv2.cvtColor`, `cv2.split` |
 | `CV_Assignment_4/` | `assignment4.ipynb` | Spatial Domain Filtering (Box, Gaussian, Laplacian) | `cv2.blur`, `cv2.GaussianBlur`, `cv2.Laplacian`, `cv2.addWeighted` |
 | `CV_Assignment_5/` | `code.ipynb` | Histogram Equalization (Standard & CLAHE) in LAB Color Space | `cv2.cvtColor`, `cv2.split`, `cv2.equalizeHist`, `cv2.createCLAHE`, `cv2.merge` |
+| `CV_Assignment_10/` | `openvino_object_detection.py` | Object Detection with OpenVINO (YOLOX-Nano) | `ov.Core()`, `ov.convert_model()`, `ov.save_model()`, `cv2.imread`, `cv2.rectangle` |
 
 Each assignment folder also contains its own `README.md` with detailed theory,
-per-cell code explanation, and a Q&A section.
+per-cell/code explanation, and a Q&A section.
 
 ## Prerequisites
 
@@ -114,7 +117,7 @@ The only third-party dependencies are:
 
 ## Usage
 
-Each assignment is a standalone notebook. To run one:
+Each assignment is a standalone notebook or script. To run one:
 
 1. Launch Jupyter from the repository root:
 
@@ -179,6 +182,11 @@ Computer-Vision-/
 │   ├── BMW.jpeg                 # Sample input image
 │   ├── output.png               # Cached output visualization
 │   └── README.md                # Assignment 5 documentation
+└── CV_Assignment_10/
+    ├── openvino_object_detection.py  # OpenVINO YOLOX-Nano object detection script
+    ├── sample_input.jpg             # Sample input image (street scene with bus)
+    ├── sample_output.jpg            # Cached annotated output image
+    └── README.md                    # Assignment 10 documentation
 ```
 
 ## Configuration
@@ -197,9 +205,9 @@ plain Python variables at the top of the relevant notebook cells. To experiment:
 
 ## Running Tests
 
-This repository does not ship a formal automated test suite. Each notebook is
+This repository does not ship a formal automated test suite. Each assignment is
 self-validating: running all cells produces the expected visualizations, and the
-notebooks guard against missing files (e.g. checking `if image is None`).
+notebooks/scripts guard against missing files (e.g. checking `if image is None`).
 
 If you want to add automated checks, a lightweight approach is to execute every
 notebook headlessly and fail on errors:
@@ -211,6 +219,12 @@ for nb in CV_Assignment_2/Ass2.ipynb CV_Assignment_3/Ass3.ipynb CV_Assignment_4/
 done
 ```
 
+For Assignment 10 (a Python script), verify the syntax and imports:
+
+```bash
+python -c "import ast; ast.parse(open('CV_Assignment_10/openvino_object_detection.py').read()); print('Syntax OK')"
+```
+
 ## Contributing
 
 Contributions are welcome. To add or improve an assignment:
@@ -220,9 +234,9 @@ Contributions are welcome. To add or improve an assignment:
    git checkout -b assignment-5-my-topic
    ```
 2. Add a new folder `CV_Assignment_N/` with:
-   - a Jupyter notebook implementing the concept,
-   - a `README.md` documenting the theory and code,
-   - any required sample assets (e.g. a sample image).
+    - a Jupyter notebook **or Python script** implementing the concept,
+    - a `README.md` documenting the theory and code,
+    - any required sample assets (e.g. a sample image).
 3. Keep dependencies limited to the packages in `requirement.txt` where possible.
 4. Run the notebook end-to-end to confirm outputs render correctly.
 5. Update this root `README.md` (the [Assignments Overview](#assignments-overview)
